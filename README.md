@@ -1,6 +1,6 @@
 # MasAcademyLab
 
-<h3>Installation Instructions (2) - Visual Studio</h3>
+<h3>Installation Instructions - Visual Studio</h3>
 <ol>
 <li>Clone or download the repository</li>
 <li>Open the solution in VS 2019</li>

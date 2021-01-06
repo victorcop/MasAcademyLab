@@ -1,7 +1,7 @@
-﻿using MasAcademyLab.Domain;
-using MasAcademyLab.Service;
+﻿using MasAcademyLab.Service;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MasAcademyLab.Web.Controllers
 {
@@ -9,19 +9,19 @@ namespace MasAcademyLab.Web.Controllers
     [ApiController]
     public class SpeakerController : ControllerBase
     {
-        private readonly ISpeakerService _speakerService;
+        private readonly ICampRepository _campRepository;
 
-        public SpeakerController(ISpeakerService speakerService)
+        public SpeakerController(ICampRepository campRepository)
         {
-            _speakerService = speakerService;
+            _campRepository = campRepository;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Speaker>> Get()
+        public async Task<IActionResult> Get()
         {
-            var speakers = _speakerService.GetSpeakers();
+            var speakers = await _campRepository.GetAllSpeakersAsync();
 
-            if (speakers == null)
+            if (speakers == null || !speakers.Any())
             {
                 return NoContent();
             }

@@ -11,7 +11,7 @@ namespace MasAcademyLab.Service.Extention
            IConfiguration configuration)
         {
             services.AddDataDependencies(configuration);
-            services.AddScoped<ISpeakerService, SpeakerService>();
+            services.AddScoped<ICampRepository, CampRepository>();
             return services;
         }
     }

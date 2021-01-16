@@ -7,26 +7,26 @@ namespace MasAcademyLab.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SpeakerController : ControllerBase
+    public class CampsController : ControllerBase
     {
-        private readonly ICampRepository _campRepository;
+        private readonly ICampService _campService;
 
-        public SpeakerController(ICampRepository campRepository)
+        public CampsController(ICampService campService)
         {
-            _campRepository = campRepository;
+            _campService = campService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var speakers = await _campRepository.GetAllSpeakersAsync();
+            var camps = await _campService.GetAllCampsAsync();
 
-            if (speakers == null || !speakers.Any())
+            if(camps == null || !camps.Any())
             {
                 return NoContent();
             }
 
-            return Ok(speakers);
+            return Ok(camps);
         }
     }
 }

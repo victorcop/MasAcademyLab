@@ -1,13 +1,13 @@
-﻿using MasAcademyLab.Data;
-using MasAcademyLab.Domain;
+﻿using MasAcademyLab.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace MasAcademyLab.Service
+namespace MasAcademyLab.Data.Repositories
 {
     public class CampRepository : ICampRepository
     {

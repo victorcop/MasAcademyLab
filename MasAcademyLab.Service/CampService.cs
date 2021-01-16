@@ -19,16 +19,45 @@ namespace MasAcademyLab.Service
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<CampModel>> GetAllCampsAsync()
+        public async Task<IEnumerable<CampModel>> GetAllCampsAsync(bool includeTalks = false)
         {
             try
             {
-                var camps = await _campRepositorie.GetAllCampsAsync();
+                var camps = await _campRepositorie.GetAllCampsAsync(includeTalks);
 
                 return _mapper.Map<IEnumerable<Camp>, IEnumerable<CampModel>>(camps);
             }
             catch (Exception)
             {
+                throw;
+            }
+        }
+
+        public async Task<CampModel> GetCampAsync(string moniker, bool includeTalks = false)
+        {
+            try
+            {
+                var camp = await _campRepositorie.GetCampAsync(moniker, includeTalks);
+
+                return _mapper.Map<Camp, CampModel>(camp);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<CampModel>> GetAllCampsByEventDate(DateTime dateTime, bool includeTalks = false)
+        {
+            try
+            {
+                var camps = await _campRepositorie.GetAllCampsByEventDate(dateTime, includeTalks);
+
+                return _mapper.Map<IEnumerable<Camp>, IEnumerable<CampModel>>(camps);
+            }
+            catch (Exception)
+            {
+
                 throw;
             }
         }

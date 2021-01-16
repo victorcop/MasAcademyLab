@@ -8,6 +8,8 @@ namespace MasAcademyLab.Service.Mapper
     {
         public MappingProfile()
         {
+            CreateMap<Speaker, SpeakerModel>().ReverseMap();
+            CreateMap<Talk, TalkModel>().ReverseMap();
             CreateMap<Camp, CampModel>().ReverseMap();
         }           
     }

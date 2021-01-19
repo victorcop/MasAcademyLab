@@ -1,5 +1,7 @@
 ﻿using MasAcademyLab.Service;
+using MasAcademyLab.Service.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,10 +13,12 @@ namespace MasAcademyLab.Web.Controllers
     public class CampsController : ControllerBase
     {
         private readonly ICampService _campService;
+        private readonly LinkGenerator _linkGenerator;
 
-        public CampsController(ICampService campService)
+        public CampsController(ICampService campService, LinkGenerator linkGenerator)
         {
             _campService = campService;
+            _linkGenerator = linkGenerator;
         }
 
         [HttpGet]
@@ -54,6 +58,27 @@ namespace MasAcademyLab.Web.Controllers
             }
 
             return Ok(camps);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post(CampModel campModel)
+        {
+            var location = _linkGenerator.GetPathByAction("Get",
+                "Camps", new { moniker = campModel.Moniker });
+
+            if (string.IsNullOrWhiteSpace(location))
+            {
+                return BadRequest();
+            }
+
+            var camp = await _campService.CreateCampAsync(campModel);
+
+            if (camp == null)
+            {
+                return BadRequest("Moniker is in use.");
+            }
+
+            return Created(location, camp);
         }
     }
 }

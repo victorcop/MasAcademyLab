@@ -61,5 +61,36 @@ namespace MasAcademyLab.Service
                 throw;
             }
         }
+
+        public async Task<CampModel> CreateCampAsync(CampModel campModel)
+        {
+            try
+            {
+                var existingCamp = await _campRepositorie.GetCampAsync(campModel.Moniker);
+
+                if(existingCamp != null)
+                {
+                    return null;
+                }
+
+                var camp = _mapper.Map<CampModel, Camp>(campModel);
+
+                _campRepositorie.Add(camp);
+
+                var response = await _campRepositorie.SaveChangesAsync();
+
+                if (response == 1)
+                {
+                    return _mapper.Map<Camp, CampModel>(camp);
+                }
+
+                return null;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

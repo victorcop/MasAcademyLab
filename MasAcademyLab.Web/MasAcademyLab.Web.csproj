@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MasAcademyLab.Domain\MasAcademyLab.Domain.csproj" />
     <ProjectReference Include="..\MasAcademyLab.Service\MasAcademyLab.Service.csproj" />
   </ItemGroup>
 

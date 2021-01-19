@@ -1,6 +1,8 @@
 using MasAcademyLab.Service.Extention;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -21,6 +23,14 @@ namespace MasAcademyLab.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddServiceDependencies(Configuration);
+            services.AddApiVersioning(opt => 
+            {
+                opt.AssumeDefaultVersionWhenUnspecified = true;
+                opt.DefaultApiVersion = new ApiVersion(1, 1);
+                opt.ReportApiVersions = true;
+                opt.ApiVersionReader = new UrlSegmentApiVersionReader();
+                //opt.ApiVersionReader = new HeaderApiVersionReader("X-Version");
+            });
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

@@ -15,6 +15,7 @@ namespace MasAcademyLab.Service.Extention
             services.AddDataDependencies(configuration);
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<ITrainingService, TrainingService>();
+            services.AddScoped<ITalkService, TalkService>();
             return services;
         }
     }

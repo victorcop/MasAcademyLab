@@ -10,12 +10,12 @@ namespace MasAcademyLab.Service
 {
     public class TrainingService : ITrainingService
     {
-        private readonly ITrainingRepository _trainingRepositorie;
+        private readonly ITrainingRepository _trainingRepository;
         private readonly IMapper _mapper;
 
-        public TrainingService(ITrainingRepository trainingRepositorie, IMapper mapper)
+        public TrainingService(ITrainingRepository trainingRepository, IMapper mapper)
         {
-            _trainingRepositorie = trainingRepositorie;
+            _trainingRepository = trainingRepository;
             _mapper = mapper;
         }
 
@@ -23,7 +23,7 @@ namespace MasAcademyLab.Service
         {
             try
             {
-                var trainings = await _trainingRepositorie.GetAllTrainingsAsync(includeTalks);
+                var trainings = await _trainingRepository.GetAllTrainingsAsync(includeTalks);
 
                 return _mapper.Map<IEnumerable<Training>, IEnumerable<TrainingModel>>(trainings);
             }
@@ -37,7 +37,7 @@ namespace MasAcademyLab.Service
         {
             try
             {
-                var training = await _trainingRepositorie.GetTrainingAsync(code, includeTalks);
+                var training = await _trainingRepository.GetTrainingAsync(code, includeTalks);
 
                 return _mapper.Map<Training, TrainingModel>(training);
             }
@@ -51,7 +51,7 @@ namespace MasAcademyLab.Service
         {
             try
             {
-                var trainings = await _trainingRepositorie.GetAllTrainingByEventDate(dateTime, includeTalks);
+                var trainings = await _trainingRepository.GetAllTrainingByEventDate(dateTime, includeTalks);
 
                 return _mapper.Map<IEnumerable<Training>, IEnumerable<TrainingModel>>(trainings);
             }
@@ -66,7 +66,7 @@ namespace MasAcademyLab.Service
         {
             try
             {
-                var existingTraining = await _trainingRepositorie.GetTrainingAsync(trainingModel.Code);
+                var existingTraining = await _trainingRepository.GetTrainingAsync(trainingModel.Code);
 
                 if(existingTraining != null)
                 {
@@ -75,16 +75,10 @@ namespace MasAcademyLab.Service
 
                 var training = _mapper.Map<TrainingModel, Training>(trainingModel);
 
-                _trainingRepositorie.Add(training);
+                _trainingRepository.Add(training);
 
-                var response = await _trainingRepositorie.SaveChangesAsync();
-
-                if (response == 1)
-                {
-                    return _mapper.Map<Training, TrainingModel>(training);
-                }
-
-                return null;
+                await _trainingRepository.SaveChangesAsync();
+                return _mapper.Map<Training, TrainingModel>(training);
             }
             catch (Exception)
             {
@@ -96,7 +90,7 @@ namespace MasAcademyLab.Service
         {
             try
             {
-                var oldTraining = await _trainingRepositorie.GetTrainingAsync(code);
+                var oldTraining = await _trainingRepository.GetTrainingAsync(code);
 
                 if (oldTraining == null)
                 {
@@ -105,14 +99,8 @@ namespace MasAcademyLab.Service
 
                 var training = _mapper.Map(trainingModel, oldTraining);
 
-                var response = await _trainingRepositorie.SaveChangesAsync();
-
-                if (response == 1)
-                {
-                    return _mapper.Map<Training, TrainingModel>(training);
-                }
-
-                return null;
+                await _trainingRepository.SaveChangesAsync();
+                return _mapper.Map<Training, TrainingModel>(training);
             }
             catch (Exception)
             {
@@ -122,13 +110,13 @@ namespace MasAcademyLab.Service
 
         public async Task DeleteTrainingAsync(string code)
         {
-            var oldTraining = await _trainingRepositorie.GetTrainingAsync(code);
+            var oldTraining = await _trainingRepository.GetTrainingAsync(code);
 
             if (oldTraining != null)
             {
-                _trainingRepositorie.Delete(oldTraining);
+                _trainingRepository.Delete(oldTraining);
 
-                await _trainingRepositorie.SaveChangesAsync();
+                await _trainingRepository.SaveChangesAsync();
             }            
         }
     }

@@ -9,7 +9,11 @@ namespace MasAcademyLab.Service.Mapper
         public MappingProfile()
         {
             CreateMap<Speaker, SpeakerModel>().ReverseMap();
-            CreateMap<Talk, TalkModel>().ReverseMap();
+            CreateMap<Talk, TalkModel>()
+                .ReverseMap()
+                .ForMember(t => t.Training, opt => opt.Ignore())
+                .ForMember(t => t.Speaker, opt => opt.Ignore());
+
             CreateMap<Location, LocationModel>().ReverseMap();
             CreateMap<Training, TrainingModel>().ReverseMap();
         }           

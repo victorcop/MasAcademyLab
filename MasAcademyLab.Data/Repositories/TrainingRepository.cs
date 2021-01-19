@@ -1,5 +1,4 @@
-﻿using MasAcademyLab.Data;
-using MasAcademyLab.Domain;
+﻿using MasAcademyLab.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -7,14 +6,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MasAcademyLab.Service
+namespace MasAcademyLab.Data.Repositories
 {
-    public class CampRepository : ICampRepository
+    public class TrainingRepository : ITrainingRepository
     {
         private readonly MasAcademyLabContext _context;
-        private readonly ILogger<CampRepository> _logger;
+        private readonly ILogger<TrainingRepository> _logger;
 
-        public CampRepository(MasAcademyLabContext context, ILogger<CampRepository> logger)
+        public TrainingRepository(MasAcademyLabContext context, ILogger<TrainingRepository> logger)
         {
             _context = context;
             _logger = logger;
@@ -40,11 +39,11 @@ namespace MasAcademyLab.Service
             return _context.SaveChangesAsync();
         }
 
-        public Task<List<Camp>> GetAllCampsByEventDate(DateTime dateTime, bool includeTalks = false)
+        public Task<List<Training>> GetAllTrainingByEventDate(DateTime dateTime, bool includeTalks = false)
         {
-            _logger.LogInformation($"Getting all Camps");
+            _logger.LogInformation($"Getting all Training");
 
-            IQueryable<Camp> query = _context.Camps
+            IQueryable<Training> query = _context.Trainings
                 .Include(c => c.Location);
 
             if (includeTalks)
@@ -61,11 +60,11 @@ namespace MasAcademyLab.Service
             return query.ToListAsync();
         }
 
-        public Task<List<Camp>> GetAllCampsAsync(bool includeTalks = false)
+        public Task<List<Training>> GetAllTrainingsAsync(bool includeTalks = false)
         {
-            _logger.LogInformation($"Getting all Camps");
+            _logger.LogInformation($"Getting all Training");
 
-            IQueryable<Camp> query = _context.Camps
+            IQueryable<Training> query = _context.Trainings
                 .Include(c => c.Location);
 
             if (includeTalks)
@@ -81,11 +80,11 @@ namespace MasAcademyLab.Service
             return query.ToListAsync();
         }
 
-        public Task<Camp> GetCampAsync(string moniker, bool includeTalks = false)
+        public Task<Training> GetTrainingAsync(string code, bool includeTalks = false)
         {
-            _logger.LogInformation($"Getting a Camp for {moniker}");
+            _logger.LogInformation($"Getting a Training for {code}");
 
-            IQueryable<Camp> query = _context.Camps
+            IQueryable<Training> query = _context.Trainings
                 .Include(c => c.Location);
 
             if (includeTalks)
@@ -95,14 +94,14 @@ namespace MasAcademyLab.Service
             }
 
             // Query It
-            query = query.Where(c => c.Moniker == moniker);
+            query = query.Where(c => c.Code == code);
 
             return query.FirstOrDefaultAsync();
         }
 
-        public Task<List<Talk>> GetTalksByMonikerAsync(string moniker, bool includeSpeakers = false)
+        public Task<List<Talk>> GetTalksByCodeAsync(string code, bool includeSpeakers = false)
         {
-            _logger.LogInformation($"Getting all Talks for a Camp");
+            _logger.LogInformation($"Getting all Talks for a Training");
 
             IQueryable<Talk> query = _context.Talks;
 
@@ -114,15 +113,15 @@ namespace MasAcademyLab.Service
 
             // Add Query
             query = query
-              .Where(t => t.Camp.Moniker == moniker)
+              .Where(t => t.Training.Code == code)
               .OrderByDescending(t => t.Title);
 
             return query.ToListAsync();
         }
 
-        public Task<Talk> GetTalkByMonikerAsync(string moniker, int talkId, bool includeSpeakers = false)
+        public Task<Talk> GetTalkByCodeAsync(string code, int talkId, bool includeSpeakers = false)
         {
-            _logger.LogInformation($"Getting all Talks for a Camp");
+            _logger.LogInformation($"Getting all Talks for a Training");
 
             IQueryable<Talk> query = _context.Talks;
 
@@ -134,17 +133,17 @@ namespace MasAcademyLab.Service
 
             // Add Query
             query = query
-              .Where(t => t.TalkId == talkId && t.Camp.Moniker == moniker);
+              .Where(t => t.TalkId == talkId && t.Training.Code == code);
 
             return query.FirstOrDefaultAsync();
         }
 
-        public Task<List<Speaker>> GetSpeakersByMonikerAsync(string moniker)
+        public Task<List<Speaker>> GetSpeakersByCodeAsync(string code)
         {
-            _logger.LogInformation($"Getting all Speakers for a Camp");
+            _logger.LogInformation($"Getting all Speakers for a Training");
 
             IQueryable<Speaker> query = _context.Talks
-              .Where(t => t.Camp.Moniker == moniker)
+              .Where(t => t.Training.Code == code)
               .Select(t => t.Speaker)
               .Where(s => s != null)
               .OrderBy(s => s.LastName)

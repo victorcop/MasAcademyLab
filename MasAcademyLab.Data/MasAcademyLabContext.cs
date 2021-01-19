@@ -11,18 +11,18 @@ namespace MasAcademyLab.Data
             
         }
 
-        public DbSet<Camp> Camps { get; set; }
+        public DbSet<Training> Trainings { get; set; }
         public DbSet<Speaker> Speakers { get; set; }
         public DbSet<Talk> Talks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder bldr)
         {
-            bldr.Entity<Camp>()
+            bldr.Entity<Training>()
               .HasData(new
               {
-                  CampId = 1,
-                  Moniker = "ATL2018",
-                  Name = "Atlanta Code Camp",
+                  TrainingId = 1,
+                  Code = "ATL2018",
+                  Name = "Atlanta Code Training",
                   EventDate = new DateTime(2018, 10, 18),
                   LocationId = 1,
                   Length = 1
@@ -44,7 +44,7 @@ namespace MasAcademyLab.Data
               .HasData(new
               {
                   TalkId = 1,
-                  CampId = 1,
+                  TrainingId = 1,
                   SpeakerId = 1,
                   Title = "Entity Framework From Scratch",
                   Abstract = "Entity Framework from scratch in an hour. Probably cover it all",
@@ -53,7 +53,7 @@ namespace MasAcademyLab.Data
               new
               {
                   TalkId = 2,
-                  CampId = 1,
+                  TrainingId = 1,
                   SpeakerId = 2,
                   Title = "Writing Sample Data Made Easy",
                   Abstract = "Thinking of good sample data examples is tiring.",

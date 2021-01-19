@@ -4,14 +4,16 @@ using MasAcademyLab.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MasAcademyLab.Data.Migrations
 {
     [DbContext(typeof(MasAcademyLabContext))]
-    partial class MasAcademyLabContextModelSnapshot : ModelSnapshot
+    [Migration("20210119095455_FromCampsToTraining")]
+    partial class FromCampsToTraining
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -164,8 +166,7 @@ namespace MasAcademyLab.Data.Migrations
                             Abstract = "Entity Framework from scratch in an hour. Probably cover it all",
                             Level = 100,
                             SpeakerId = 1,
-                            Title = "Entity Framework From Scratch",
-                            TrainingId = 1
+                            Title = "Entity Framework From Scratch"
                         },
                         new
                         {
@@ -173,8 +174,7 @@ namespace MasAcademyLab.Data.Migrations
                             Abstract = "Thinking of good sample data examples is tiring.",
                             Level = 200,
                             SpeakerId = 2,
-                            Title = "Writing Sample Data Made Easy",
-                            TrainingId = 1
+                            Title = "Writing Sample Data Made Easy"
                         });
                 });
 
@@ -210,11 +210,10 @@ namespace MasAcademyLab.Data.Migrations
                         new
                         {
                             TrainingId = 1,
-                            Code = "ATL2018",
                             EventDate = new DateTime(2018, 10, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Length = 1,
                             LocationId = 1,
-                            Name = "Atlanta Code Training"
+                            Name = "Atlanta Code Camp"
                         });
                 });
 

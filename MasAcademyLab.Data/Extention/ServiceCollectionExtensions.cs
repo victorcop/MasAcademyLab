@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MasAcademyLab.Data.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,6 +14,7 @@ namespace MasAcademyLab.Data.Extention
             services.AddDbContext<MasAcademyLabContext>(opt =>
                 opt.UseSqlServer(configuration.GetConnectionString("MasAcademyLab"))
             );
+            services.AddScoped<ITrainingRepository, TrainingRepository>();
             return services;
         }
     }

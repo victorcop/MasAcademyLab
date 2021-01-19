@@ -1,6 +1,8 @@
-﻿using MasAcademyLab.Data.Extention;
+﻿using AutoMapper;
+using MasAcademyLab.Data.Extention;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace MasAcademyLab.Service.Extention
 {
@@ -11,7 +13,9 @@ namespace MasAcademyLab.Service.Extention
            IConfiguration configuration)
         {
             services.AddDataDependencies(configuration);
-            services.AddScoped<ICampRepository, CampRepository>();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddScoped<ITrainingService, TrainingService>();
+            services.AddScoped<ITalkService, TalkService>();
             return services;
         }
     }

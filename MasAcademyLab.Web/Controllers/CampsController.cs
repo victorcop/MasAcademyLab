@@ -35,9 +35,9 @@ namespace MasAcademyLab.Web.Controllers
         }
 
         [HttpGet("{moniker}")]
-        public async Task<IActionResult> Get(string moniker)
+        public async Task<IActionResult> Get(string moniker, bool includeTalks = false)
         {
-            var camp = await _campService.GetCampAsync(moniker);
+            var camp = await _campService.GetCampAsync(moniker, includeTalks);
 
             if(camp == null)
             {
@@ -79,6 +79,34 @@ namespace MasAcademyLab.Web.Controllers
             }
 
             return Created(location, camp);
+        }
+
+        [HttpPut("{moniker}")]
+        public async Task<IActionResult> Put(string moniker, CampModel campModel)
+        {
+            var camp = await _campService.UpdateCampAsync(moniker, campModel);
+
+            if (camp == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(camp);
+        }
+
+        [HttpDelete("{moniker}")]
+        public async Task<IActionResult> Delete(string moniker)
+        {
+            var camp = await _campService.GetCampAsync(moniker);
+
+            if (camp == null)
+            {
+                return NotFound();
+            }
+
+            await _campService.DeleteCampAsync(moniker);
+
+            return Ok();
         }
     }
 }

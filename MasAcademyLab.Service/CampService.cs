@@ -88,9 +88,48 @@ namespace MasAcademyLab.Service
             }
             catch (Exception)
             {
-
                 throw;
             }
+        }
+
+        public async Task<CampModel> UpdateCampAsync(string moniker, CampModel campModel)
+        {
+            try
+            {
+                var oldCamp = await _campRepositorie.GetCampAsync(moniker);
+
+                if (oldCamp == null)
+                {
+                    return null;
+                }
+
+                var camp = _mapper.Map(campModel, oldCamp);
+
+                var response = await _campRepositorie.SaveChangesAsync();
+
+                if (response == 1)
+                {
+                    return _mapper.Map<Camp, CampModel>(camp);
+                }
+
+                return null;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task DeleteCampAsync(string moniker)
+        {
+            var oldCamp = await _campRepositorie.GetCampAsync(moniker);
+
+            if (oldCamp != null)
+            {
+                _campRepositorie.Delete(oldCamp);
+
+                await _campRepositorie.SaveChangesAsync();
+            }            
         }
     }
 }

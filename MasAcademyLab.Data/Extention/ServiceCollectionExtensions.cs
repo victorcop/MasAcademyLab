@@ -14,7 +14,7 @@ namespace MasAcademyLab.Data.Extention
             services.AddDbContext<MasAcademyLabContext>(opt =>
                 opt.UseSqlServer(configuration.GetConnectionString("MasAcademyLab"))
             );
-            services.AddScoped<ICampRepository, CampRepository>();
+            services.AddScoped<ITrainingRepository, TrainingRepository>();
             return services;
         }
     }

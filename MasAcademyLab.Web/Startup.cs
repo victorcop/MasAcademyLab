@@ -1,6 +1,7 @@
 using MasAcademyLab.Service.Extention;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
@@ -46,6 +47,17 @@ namespace MasAcademyLab.Web
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MasAcademyLab.Web v1"));
+            }
+            else
+            {
+                app.UseExceptionHandler(appBuilder => 
+                {
+                   appBuilder.Run(async context =>
+                   {
+                       context.Response.StatusCode = 500;
+                       await context.Response.WriteAsync("An unexpected fault happened. Try again later.");
+                   });
+                });
             }
 
             app.UseRouting();

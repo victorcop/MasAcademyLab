@@ -13,11 +13,13 @@ namespace MasAcademyLab.Web.Controllers
     {
         private readonly ITalkService _talkService;
         private readonly LinkGenerator _linkGenerator;
+        private readonly ITrainingService _trainingService;
 
-        public TalksController(ITalkService talkService, LinkGenerator linkGenerator)
+        public TalksController(ITalkService talkService, LinkGenerator linkGenerator, ITrainingService trainingService)
         {
             _talkService = talkService;
             _linkGenerator = linkGenerator;
+            _trainingService = trainingService;
         }
 
         [HttpGet]
@@ -47,14 +49,9 @@ namespace MasAcademyLab.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(string code, TalkModel talkModel)
+        public async Task<IActionResult> Post(string code, TalkCreationModel talkModel)
         {
             var talk = await _talkService.CreateTalkAsync(code, talkModel);
-
-            if(talk == null)
-            {
-                return BadRequest();
-            }
 
             var url = _linkGenerator.GetPathByAction(HttpContext,
                                                      "Get",
@@ -64,14 +61,14 @@ namespace MasAcademyLab.Web.Controllers
         }
 
         [HttpPut("{talkId:int}")]
-        public async Task<IActionResult> Put(string code, int talkId, TalkModel talkModel)
+        public async Task<IActionResult> Put(string code, int talkId, TalkUpdateModel talkModel)
         {
-            var talk = await _talkService.UpdateTalkAsync(code, talkId, talkModel);
-
-            if (talk == null)
+            if (!await _trainingService.Exists(code) || !await _talkService.Exists(code, talkId))
             {
-                return BadRequest();
+                return NotFound();
             }
+
+            var talk = await _talkService.UpdateTalkAsync(code, talkId, talkModel);
 
             return Ok(talk);
         }
@@ -79,9 +76,7 @@ namespace MasAcademyLab.Web.Controllers
         [HttpDelete("{talkId:int}")]
         public async Task<IActionResult> Delete(string code, int talkId)
         {
-            var talk = await _talkService.GetTalkAsync(code, talkId);
-
-            if (talk == null)
+            if ( !await _trainingService.Exists(code) || !await _talkService.Exists(code, talkId))
             {
                 return NotFound();
             }

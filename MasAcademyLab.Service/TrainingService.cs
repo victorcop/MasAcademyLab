@@ -62,18 +62,13 @@ namespace MasAcademyLab.Service
             }
         }
 
-        public async Task<TrainingModel> CreateTrainingAsync(TrainingModel trainingModel)
+        public async Task<TrainingModel> CreateTrainingAsync(TrainingCreationModel trainingModel)
         {
             try
             {
                 var existingTraining = await _trainingRepository.GetTrainingAsync(trainingModel.Code);
 
-                if(existingTraining != null)
-                {
-                    return null;
-                }
-
-                var training = _mapper.Map<TrainingModel, Training>(trainingModel);
+                var training = _mapper.Map<TrainingCreationModel, Training>(trainingModel);
 
                 _trainingRepository.Add(training);
 
@@ -86,16 +81,11 @@ namespace MasAcademyLab.Service
             }
         }
 
-        public async Task<TrainingModel> UpdateTrainingAsync(string code, TrainingModel trainingModel)
+        public async Task<TrainingModel> UpdateTrainingAsync(string code, TrainingUpdateModel trainingModel)
         {
             try
             {
                 var oldTraining = await _trainingRepository.GetTrainingAsync(code);
-
-                if (oldTraining == null)
-                {
-                    return null;
-                }
 
                 var training = _mapper.Map(trainingModel, oldTraining);
 
@@ -118,6 +108,20 @@ namespace MasAcademyLab.Service
 
                 await _trainingRepository.SaveChangesAsync();
             }            
+        }
+
+        public async Task<bool> Exists(string code)
+        {
+            try
+            {
+                var training = await _trainingRepository.GetTrainingAsync(code);
+
+                return training != null;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

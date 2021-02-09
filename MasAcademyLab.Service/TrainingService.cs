@@ -2,6 +2,7 @@
 using MasAcademyLab.Data.Repositories;
 using MasAcademyLab.Domain;
 using MasAcademyLab.Service.Models;
+using Microsoft.AspNetCore.JsonPatch;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -94,6 +95,27 @@ namespace MasAcademyLab.Service
             }
             catch (Exception)
             {
+                throw;
+            }
+        }
+        
+        public async Task<TrainingModel> PatchTrainingAsync(string code, JsonPatchDocument<TrainingUpdateModel> trainingPatchDocument)
+        {
+            try
+            {
+                var oldTraining = await _trainingRepository.GetTrainingAsync(code);
+                var trainingToPatch = _mapper.Map<TrainingUpdateModel>(oldTraining);
+
+                trainingPatchDocument.ApplyTo(trainingToPatch);
+
+                _mapper.Map(trainingToPatch, oldTraining);
+
+                await _trainingRepository.SaveChangesAsync();
+                return _mapper.Map<Training, TrainingModel>(oldTraining);
+            }
+            catch (Exception)
+            {
+
                 throw;
             }
         }

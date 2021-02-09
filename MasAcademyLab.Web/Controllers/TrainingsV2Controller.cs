@@ -85,7 +85,7 @@ namespace MasAcademyLab.Web.Controllers
         [HttpPut("{code}")]
         public async Task<IActionResult> Put(string code, TrainingUpdateModel trainingModel)
         {
-            if (!await _trainingService.Exists(trainingModel.Code))
+            if (!await _trainingService.Exists(code))
             {
                 return NotFound();
             }

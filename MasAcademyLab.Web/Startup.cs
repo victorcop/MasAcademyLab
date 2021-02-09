@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Serialization;
 
 namespace MasAcademyLab.Web
 {
@@ -32,7 +33,13 @@ namespace MasAcademyLab.Web
                 opt.ApiVersionReader = new UrlSegmentApiVersionReader();
                 //opt.ApiVersionReader = new HeaderApiVersionReader("X-Version");
             });
-            services.AddControllers();
+
+            services.AddControllers()
+                    .AddNewtonsoftJson(setupAction => 
+                    {
+                        setupAction.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                    });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MasAcademyLab.Web", Version = "v1" });

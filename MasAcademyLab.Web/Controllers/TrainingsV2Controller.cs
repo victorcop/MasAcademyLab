@@ -32,13 +32,7 @@ namespace MasAcademyLab.Web.Controllers
                 return NoContent();
             }
 
-            var response = new
-            {
-                Count = trainings.Count(),
-                Result = trainings
-            };
-
-            return Ok(response);
+            return Ok(trainings);
         }
 
         [HttpGet("{code}")]
@@ -68,7 +62,7 @@ namespace MasAcademyLab.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(TrainingModel trainingModel)
+        public async Task<IActionResult> Post(TrainingCreationModel trainingModel)
         {
             var location = _linkGenerator.GetPathByAction("Get",
                 "Trainings", new { code = trainingModel.Code });
@@ -78,25 +72,25 @@ namespace MasAcademyLab.Web.Controllers
                 return BadRequest();
             }
 
-            var training = await _trainingService.CreateTrainingAsync(trainingModel);
-
-            if (training == null)
+            if (await _trainingService.Exists(trainingModel.Code))
             {
                 return BadRequest("Code is in use.");
             }
+
+            var training = await _trainingService.CreateTrainingAsync(trainingModel);
 
             return Created(location, training);
         }
 
         [HttpPut("{code}")]
-        public async Task<IActionResult> Put(string code, TrainingModel trainingModel)
+        public async Task<IActionResult> Put(string code, TrainingUpdateModel trainingModel)
         {
-            var training = await _trainingService.UpdateTrainingAsync(code, trainingModel);
-
-            if (training == null)
+            if (!await _trainingService.Exists(code))
             {
                 return NotFound();
             }
+
+            var training = await _trainingService.UpdateTrainingAsync(code, trainingModel);
 
             return Ok(training);
         }
@@ -104,9 +98,7 @@ namespace MasAcademyLab.Web.Controllers
         [HttpDelete("{code}")]
         public async Task<IActionResult> Delete(string code)
         {
-            var training = await _trainingService.GetTrainingAsync(code);
-
-            if (training == null)
+            if (await _trainingService.Exists(code))
             {
                 return NotFound();
             }

@@ -1,5 +1,6 @@
 ﻿using MasAcademyLab.Service;
 using MasAcademyLab.Service.Models;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using System;
@@ -26,7 +27,7 @@ namespace MasAcademyLab.Web.Controllers
         {
             var trainings = await _trainingService.GetAllTrainingsAsync(includeTalks);
 
-            if(trainings == null || !trainings.Any())
+            if (trainings == null || !trainings.Any())
             {
                 return NoContent();
             }
@@ -39,7 +40,7 @@ namespace MasAcademyLab.Web.Controllers
         {
             var training = await _trainingService.GetTrainingAsync(code, includeTalks);
 
-            if(training == null)
+            if (training == null)
             {
                 return NotFound();
             }
@@ -61,7 +62,7 @@ namespace MasAcademyLab.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(TrainingModel trainingModel)
+        public async Task<IActionResult> Post(TrainingCreationModel trainingModel)
         {
             var location = _linkGenerator.GetPathByAction("Get",
                 "Trainings", new { code = trainingModel.Code });
@@ -71,25 +72,38 @@ namespace MasAcademyLab.Web.Controllers
                 return BadRequest();
             }
 
-            var training = await _trainingService.CreateTrainingAsync(trainingModel);
-
-            if (training == null)
+            if (await _trainingService.Exists(trainingModel.Code))
             {
                 return BadRequest("Code is in use.");
             }
+
+            var training = await _trainingService.CreateTrainingAsync(trainingModel);
 
             return Created(location, training);
         }
 
         [HttpPut("{code}")]
-        public async Task<IActionResult> Put(string code, TrainingModel trainingModel)
+        public async Task<IActionResult> Put(string code, TrainingUpdateModel trainingModel)
         {
-            var training = await _trainingService.UpdateTrainingAsync(code, trainingModel);
-
-            if (training == null)
+            if (!await _trainingService.Exists(code))
             {
                 return NotFound();
             }
+
+            var training = await _trainingService.UpdateTrainingAsync(code, trainingModel);
+
+            return Ok(training);
+        }
+
+        [HttpPatch("{code}")]
+        public async Task<IActionResult> Patch(string code, JsonPatchDocument<TrainingUpdateModel> trainingPatchDocument)
+        {
+            if (!await _trainingService.Exists(code))
+            {
+                return NotFound();
+            }
+
+            var training = await _trainingService.PatchTrainingAsync(code, trainingPatchDocument);
 
             return Ok(training);
         }
@@ -97,9 +111,7 @@ namespace MasAcademyLab.Web.Controllers
         [HttpDelete("{code}")]
         public async Task<IActionResult> Delete(string code)
         {
-            var training = await _trainingService.GetTrainingAsync(code);
-
-            if (training == null)
+            if (!await _trainingService.Exists(code))
             {
                 return NotFound();
             }

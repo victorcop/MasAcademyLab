@@ -16,6 +16,10 @@ namespace MasAcademyLab.Service.Mapper
 
             CreateMap<Location, LocationModel>().ReverseMap();
             CreateMap<Training, TrainingModel>().ReverseMap();
+            CreateMap<TrainingCreationModel, Training>();
+            CreateMap<TrainingUpdateModel, Training>().ReverseMap();           
+            CreateMap<TalkCreationModel, Talk>();
+            CreateMap<TalkUpdateModel, Talk>();            
         }           
     }
 }

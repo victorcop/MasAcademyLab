@@ -8,8 +8,9 @@ namespace MasAcademyLab.Service
     {
         Task<IEnumerable<TalkModel>> GetTalksAsync(string code, bool includeSpeakers = false);
         Task<TalkModel> GetTalkAsync(string code, int talkId, bool includeSpeakers = false);
-        Task<TalkModel> CreateTalkAsync(string code, TalkModel talkModel);
-        Task<TalkModel> UpdateTalkAsync(string code, int talkId, TalkModel talkModel);
+        Task<TalkModel> CreateTalkAsync(string code, TalkCreationModel talkModel);
+        Task<TalkModel> UpdateTalkAsync(string code, int talkId, TalkUpdateModel talkModel);
         Task DeleteTalkAsync(string code, int talkId);
+        Task<bool> Exists(string code, int talkId);
     }
 }

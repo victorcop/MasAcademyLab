@@ -49,31 +49,26 @@ namespace MasAcademyLab.Service
             }
         }
 
-        public async Task<TalkModel> CreateTalkAsync(string code, TalkModel talkModel)
+        public async Task<TalkModel> CreateTalkAsync(string code, TalkCreationModel talkModel)
         {
             try
             {
                 var training = await _trainingRepository.GetTrainingAsync(code);
 
-                if (training == null || talkModel.Speaker == null)
-                {
-                    return null;
-                }
-
-                talkModel.TalkId = 0;
-
                 var talk = _mapper.Map<Talk>(talkModel);
-                var speaker = await _trainingRepository.GetSpeakerAsync(talkModel.Speaker.SpeakerId);
 
-                if (speaker == null)
+                if (talkModel.Speaker != null)
                 {
-                    return null;
-                }
+                    var speaker = await _trainingRepository.GetSpeakerAsync(talkModel.Speaker.SpeakerId);
+
+                    if (speaker != null)
+                    {
+                        talk.SpeakerId = speaker.SpeakerId;
+                        talk.Speaker = speaker;
+                    }
+                }                
 
                 talk.Training = training;
-                talk.Speaker = speaker;
-                talk.SpeakerId = speaker.SpeakerId;
-
                 _trainingRepository.Add(talk);
 
                 await _trainingRepository.SaveChangesAsync();
@@ -86,16 +81,11 @@ namespace MasAcademyLab.Service
             }
         }
 
-        public async Task<TalkModel> UpdateTalkAsync(string code, int talkId, TalkModel talkModel)
+        public async Task<TalkModel> UpdateTalkAsync(string code, int talkId, TalkUpdateModel talkModel)
         {
             try
             {
                 var oldTalk = await _trainingRepository.GetTalkByCodeAsync(code, talkId);
-
-                if (oldTalk == null)
-                {
-                    return null;
-                }
 
                 _mapper.Map(talkModel, oldTalk);
 
@@ -104,11 +94,13 @@ namespace MasAcademyLab.Service
                     var speaker = await _trainingRepository.GetSpeakerAsync(talkModel.Speaker.SpeakerId);
                     if(speaker != null)
                     {
+                        oldTalk.SpeakerId = speaker.SpeakerId;
                         oldTalk.Speaker = speaker;
                     }
                 }
+
                 await _trainingRepository.SaveChangesAsync();
-                return _mapper.Map(oldTalk, talkModel);
+                return _mapper.Map<TalkModel>(oldTalk);
             }
             catch (Exception)
             {
@@ -126,6 +118,20 @@ namespace MasAcademyLab.Service
                 _trainingRepository.Delete(oldTalk);
 
                 await _trainingRepository.SaveChangesAsync();
+            }
+        }
+
+        public async Task<bool> Exists(string code, int talkId)
+        {
+            try
+            {
+                var talk = await _trainingRepository.GetTalkByCodeAsync(code, talkId);
+
+                return talk != null;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
     }

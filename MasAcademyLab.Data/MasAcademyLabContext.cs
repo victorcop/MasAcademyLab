@@ -21,8 +21,8 @@ namespace MasAcademyLab.Data
               .HasData(new
               {
                   TrainingId = 1,
-                  Code = "ATL2018",
-                  Name = "Atlanta Code Training",
+                  Code = "MAS2021",
+                  Name = "Mas Academy Code Training",
                   EventDate = new DateTime(2018, 10, 18),
                   LocationId = 1,
                   Length = 1
@@ -32,12 +32,12 @@ namespace MasAcademyLab.Data
               .HasData(new
               {
                   LocationId = 1,
-                  VenueName = "Atlanta Convention Center",
-                  Address1 = "123 Main Street",
-                  CityTown = "Atlanta",
-                  StateProvince = "GA",
+                  VenueName = "",
+                  Address1 = "Calle 5 #45-54",
+                  CityTown = "Medellín, Colombia",
+                  StateProvince = "ME",
                   PostalCode = "12345",
-                  Country = "USA"
+                  Country = "COL"
               });
 
             bldr.Entity<Talk>()
@@ -46,8 +46,8 @@ namespace MasAcademyLab.Data
                   TalkId = 1,
                   TrainingId = 1,
                   SpeakerId = 1,
-                  Title = "Entity Framework From Scratch",
-                  Abstract = "Entity Framework from scratch in an hour. Probably cover it all",
+                  Title = ".Net Core API",
+                  Abstract = ".Net Core API in an hour.",
                   Level = 100
               },
               new
@@ -64,23 +64,23 @@ namespace MasAcademyLab.Data
               .HasData(new
               {
                   SpeakerId = 1,
-                  FirstName = "Shawn",
-                  LastName = "Wildermuth",
-                  BlogUrl = "http://wildermuth.com",
-                  Company = "Wilder Minds LLC",
-                  CompanyUrl = "http://wilderminds.com",
-                  GitHub = "shawnwildermuth",
-                  Twitter = "shawnwildermuth"
+                  FirstName = "Victor",
+                  LastName = "Velasquez",
+                  BlogUrl = "",
+                  Company = "Mas Global Consulting",
+                  CompanyUrl = "https://masglobalconsulting.com/",
+                  GitHub = "https://github.com/victorcop",
+                  Twitter = "@victorcop55"
               }, new
               {
                   SpeakerId = 2,
-                  FirstName = "Resa",
-                  LastName = "Wildermuth",
-                  BlogUrl = "http://shawnandresa.com",
-                  Company = "Wilder Minds LLC",
-                  CompanyUrl = "http://wilderminds.com",
-                  GitHub = "resawildermuth",
-                  Twitter = "resawildermuth"
+                  FirstName = "Francisco",
+                  LastName = "Gutierrez",
+                  BlogUrl = "",
+                  Company = "Mas Global Consulting",
+                  CompanyUrl = "https://masglobalconsulting.com/",
+                  GitHub = "",
+                  Twitter = ""
               });
 
         }

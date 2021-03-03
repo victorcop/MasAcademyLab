@@ -11,11 +11,15 @@ namespace MasAcademyLab.Service
     public class TalkService : ITalkService
     {
         private readonly ITrainingRepository _trainingRepository;
+        private readonly ITalkRepository _talkRepository;
+        private readonly ISpeakerRepository _speakerRepository;
         private readonly IMapper _mapper;
 
-        public TalkService(ITrainingRepository trainingRepository, IMapper mapper)
+        public TalkService(ITrainingRepository trainingRepository,ITalkRepository talkRepository, ISpeakerRepository speakerRepository, IMapper mapper)
         {
             _trainingRepository = trainingRepository;
+            _talkRepository = talkRepository;
+            _speakerRepository = speakerRepository;
             _mapper = mapper;
         }
 
@@ -23,7 +27,7 @@ namespace MasAcademyLab.Service
         {
             try
             {
-                var talks = await _trainingRepository.GetTalksByCodeAsync(code, includeSpeakers);
+                var talks = await _talkRepository.GetTalksByCodeAsync(code, includeSpeakers);
 
                 return _mapper.Map<IEnumerable<TalkModel>>(talks);
             }
@@ -38,7 +42,7 @@ namespace MasAcademyLab.Service
         {
             try
             {
-                var talk = await _trainingRepository.GetTalkByCodeAsync(code, talkId, includeSpeakers);
+                var talk = await _talkRepository.GetTalkByCodeAsync(code, talkId, includeSpeakers);
 
                 return _mapper.Map<TalkModel>(talk);
             }
@@ -59,7 +63,7 @@ namespace MasAcademyLab.Service
 
                 if (talkModel.Speaker != null)
                 {
-                    var speaker = await _trainingRepository.GetSpeakerAsync(talkModel.Speaker.SpeakerId);
+                    var speaker = await _speakerRepository.GetSpeakerAsync(talkModel.Speaker.SpeakerId);
 
                     if (speaker != null)
                     {
@@ -69,9 +73,9 @@ namespace MasAcademyLab.Service
                 }                
 
                 talk.Training = training;
-                _trainingRepository.Add(talk);
+                _talkRepository.Add(talk);
 
-                await _trainingRepository.SaveChangesAsync();
+                await _talkRepository.SaveChangesAsync();
                 return _mapper.Map<TalkModel>(talk);
             }
             catch (Exception)
@@ -85,13 +89,13 @@ namespace MasAcademyLab.Service
         {
             try
             {
-                var oldTalk = await _trainingRepository.GetTalkByCodeAsync(code, talkId);
+                var oldTalk = await _talkRepository.GetTalkByCodeAsync(code, talkId);
 
                 _mapper.Map(talkModel, oldTalk);
 
                 if (talkModel.Speaker != null)
                 {
-                    var speaker = await _trainingRepository.GetSpeakerAsync(talkModel.Speaker.SpeakerId);
+                    var speaker = await _speakerRepository.GetSpeakerAsync(talkModel.Speaker.SpeakerId);
                     if(speaker != null)
                     {
                         oldTalk.SpeakerId = speaker.SpeakerId;
@@ -99,7 +103,7 @@ namespace MasAcademyLab.Service
                     }
                 }
 
-                await _trainingRepository.SaveChangesAsync();
+                await _talkRepository.SaveChangesAsync();
                 return _mapper.Map<TalkModel>(oldTalk);
             }
             catch (Exception)
@@ -111,13 +115,13 @@ namespace MasAcademyLab.Service
 
         public async Task DeleteTalkAsync(string code, int talkId)
         {
-            var oldTalk = await _trainingRepository.GetTalkByCodeAsync(code, talkId);
+            var oldTalk = await _talkRepository.GetTalkByCodeAsync(code, talkId);
 
             if (oldTalk != null)
             {
-                _trainingRepository.Delete(oldTalk);
+                _talkRepository.Delete(oldTalk);
 
-                await _trainingRepository.SaveChangesAsync();
+                await _talkRepository.SaveChangesAsync();
             }
         }
 
@@ -125,7 +129,7 @@ namespace MasAcademyLab.Service
         {
             try
             {
-                var talk = await _trainingRepository.GetTalkByCodeAsync(code, talkId);
+                var talk = await _talkRepository.GetTalkByCodeAsync(code, talkId);
 
                 return talk != null;
             }

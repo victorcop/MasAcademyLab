@@ -15,6 +15,8 @@ namespace MasAcademyLab.Data.Extention
                 opt.UseSqlServer(configuration.GetConnectionString("MasAcademyLab"))
             );
             services.AddScoped<ITrainingRepository, TrainingRepository>();
+            services.AddScoped<ISpeakerRepository, SpeakerRepository>();
+            services.AddScoped<ITalkRepository, TalkRepository>();
             return services;
         }
     }

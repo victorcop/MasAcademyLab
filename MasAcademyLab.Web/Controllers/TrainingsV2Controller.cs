@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MasAcademyLab.Web.Controllers
 {
-    [Route("api/v{version:apiVersion}/Trainings")]
+    [Route("api/Trainings")]
     [ApiVersion("2.0")]
     [ApiController]
     public class TrainingsV2Controller : ControllerBase

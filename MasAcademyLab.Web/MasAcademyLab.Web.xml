@@ -1,0 +1,151 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MasAcademyLab.Web</name>
+    </assembly>
+    <members>
+        <member name="T:MasAcademyLab.Web.Controllers.TalksController">
+            <summary>
+            Talks Controller
+            </summary>
+        </member>
+        <member name="M:MasAcademyLab.Web.Controllers.TalksController.#ctor(MasAcademyLab.Service.ITalkService,Microsoft.AspNetCore.Routing.LinkGenerator,MasAcademyLab.Service.ITrainingService)">
+            <summary>
+            Talks Constructure
+            </summary>
+            <param name="talkService">Object of the type <see cref="T:MasAcademyLab.Service.ITalkService"/></param>
+            <param name="linkGenerator">Object of the type <see cref="T:Microsoft.AspNetCore.Routing.LinkGenerator"/></param>
+            <param name="trainingService">Object of the type <see cref="T:MasAcademyLab.Service.ITrainingService"/></param>
+        </member>
+        <member name="M:MasAcademyLab.Web.Controllers.TalksController.Get(System.String,System.Boolean)">
+            <summary>
+            Gets the talks from a training
+            </summary>
+            <param name="code">Training Code</param>
+            <param name="includeSpeakers">includeSpeakers = false</param>
+            <returns>Returns a List of TalkModel</returns>
+            <response code="200">Returns a List of TalkModel</response>
+            <response code="204">No Content</response>
+        </member>
+        <member name="M:MasAcademyLab.Web.Controllers.TalksController.Get(System.String,System.Int32,System.Boolean)">
+            <summary>
+            Gets a talk from a training
+            </summary>
+            <param name="code">Training Code</param>
+            <param name="talkId">Talk Id</param>
+            <param name="includeSpeakers">includeSpeakers = false</param>
+            <returns>Returns a ActionResult of TalkModel</returns>
+            <response code="200">Returns a ActionResult of TalkModel</response>
+            <response code="404">No Content</response>
+        </member>
+        <member name="M:MasAcademyLab.Web.Controllers.TalksController.Post(System.String,MasAcademyLab.Service.Models.TalkCreationModel)">
+            <summary>
+            Creates a training
+            </summary>
+            <param name="code">Training Code</param>
+            <param name="talkModel">Object of the type <see cref="T:MasAcademyLab.Service.Models.TalkCreationModel"/></param>
+            <returns>Returns a ActionResult of TalkModel</returns>
+            <response code="201">Returns a ActionResult of TalkModel</response>
+        </member>
+        <member name="M:MasAcademyLab.Web.Controllers.TalksController.Put(System.String,System.Int32,MasAcademyLab.Service.Models.TalkUpdateModel)">
+            <summary>
+            Updates a talk
+            </summary>
+            <param name="code">Training Code</param>
+            <param name="talkId">Talk id</param>
+            <param name="talkModel">Oject of the type <see cref="T:MasAcademyLab.Service.Models.TalkUpdateModel"/></param>
+            <returns>Returns a ActionResult of TalkModel</returns>
+            <response code="200">Returns a ActionResult of TalkModel</response>
+            <response code="404">No Content</response>
+        </member>
+        <member name="M:MasAcademyLab.Web.Controllers.TalksController.Delete(System.String,System.Int32)">
+            <summary>
+            Deletes a talk
+            </summary>
+            <param name="code">Training Code</param>
+            <param name="talkId">Talk id</param>
+            <returns>Returns a IActionResult</returns>
+            <response code="200">Returns a IActionResult</response>
+            <response code="404">No Content</response>
+        </member>
+        <member name="T:MasAcademyLab.Web.Controllers.TrainingsController">
+            <summary>
+            Training Controller
+            </summary>
+        </member>
+        <member name="M:MasAcademyLab.Web.Controllers.TrainingsController.#ctor(MasAcademyLab.Service.ITrainingService,Microsoft.AspNetCore.Routing.LinkGenerator)">
+            <summary>
+            Training Constructure
+            </summary>
+            <param name="trainingService">Object of the type <see cref="T:MasAcademyLab.Service.ITrainingService"/></param>
+            <param name="linkGenerator">Object of the type <see cref="T:Microsoft.AspNetCore.Routing.LinkGenerator"/></param>
+        </member>
+        <member name="M:MasAcademyLab.Web.Controllers.TrainingsController.Get(System.Boolean)">
+            <summary>
+            Gets all trainings
+            </summary>
+            <param name="includeTalks">includeTalks = false</param>
+            <returns>An ActionResult of a list of TrainingModel</returns>
+            <response code="200">Returns a List of TrainingModel</response>
+            <response code="204">No Content</response>
+        </member>
+        <member name="M:MasAcademyLab.Web.Controllers.TrainingsController.Get(System.String,System.Boolean)">
+            <summary>
+            Gets a Training
+            </summary>
+            <param name="code">Training Code</param>
+            <param name="includeTalks">includeTalks = false</param>
+            <returns>Returns an ActionResult of TrainingModel</returns>
+            <response code="200">Returns an ActionResult of TrainingModel</response>
+            <response code="404">Not Found</response>
+        </member>
+        <member name="M:MasAcademyLab.Web.Controllers.TrainingsController.SearchByDate(System.DateTime,System.Boolean)">
+            <summary>
+            Search By Date
+            </summary>
+            <param name="date">Object of the type <see cref="T:System.DateTime"/></param>
+            <param name="includeTalks">includeTalks = false</param>
+            <returns>Returns an ActionResult of TrainingModel</returns>
+            <response code="200">Returns an ActionResult of TrainingModel</response>
+            <response code="404">Not Found</response>
+        </member>
+        <member name="M:MasAcademyLab.Web.Controllers.TrainingsController.Post(MasAcademyLab.Service.Models.TrainingCreationModel)">
+            <summary>
+            Creates a Training
+            </summary>
+            <param name="trainingModel">Object of the type <see cref="T:MasAcademyLab.Service.Models.TrainingCreationModel"/></param>
+            <returns>Returns an ActionResult of TrainingModel and the resource location</returns>
+            <response code="201">Returns an ActionResult of TrainingModel and the resource location</response>
+            <response code="400">Bad Request</response>
+        </member>
+        <member name="M:MasAcademyLab.Web.Controllers.TrainingsController.Put(System.String,MasAcademyLab.Service.Models.TrainingUpdateModel)">
+            <summary>
+            Updates a Training
+            </summary>
+            <param name="code">Training Code</param>
+            <param name="trainingModel">Object of the type <see cref="T:MasAcademyLab.Service.Models.TrainingUpdateModel"/></param>
+            <returns>Returns an ActionResult of TrainingModel</returns>
+            <response code="200">Returns an ActionResult of TrainingModel</response>
+            <response code="404">Not Found</response>
+        </member>
+        <member name="M:MasAcademyLab.Web.Controllers.TrainingsController.Patch(System.String,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{MasAcademyLab.Service.Models.TrainingUpdateModel})">
+            <summary>
+            Patch Training
+            </summary>
+            <param name="code">Training Code</param>
+            <param name="trainingPatchDocument">Object of the type <see cref="T:Microsoft.AspNetCore.JsonPatch.JsonPatchDocument`1"/></param>
+            <returns>Returns an ActionResult of TrainingModel</returns>
+            <response code="200">Returns an ActionResult of TrainingModel</response>
+            <response code="404">Not Found</response>
+        </member>
+        <member name="M:MasAcademyLab.Web.Controllers.TrainingsController.Delete(System.String)">
+            <summary>
+            Deletes a Training
+            </summary>
+            <param name="code">Training Code</param>
+            <returns>Returns an IActionResult</returns>
+            <response code="200">Returns an IActionResult</response>
+            <response code="404">Not Found</response>
+        </member>
+    </members>
+</doc>

@@ -1,5 +1,6 @@
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
 WORKDIR /app
+HEALTHCHECK --interval=5s --timeout=10s --retries=3 CMD curl --fail https://localhost:80/healthz || exit 1
 EXPOSE 80
 EXPOSE 443
 

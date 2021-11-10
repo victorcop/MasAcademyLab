@@ -1,5 +1,7 @@
+using HealthChecks.UI.Client;
 using MasAcademyLab.Service.Extention;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +33,7 @@ namespace MasAcademyLab.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddServiceDependencies(Configuration);
-            services.AddVersionedApiExplorer(setupAction => 
+            services.AddVersionedApiExplorer(setupAction =>
             {
                 setupAction.GroupNameFormat = "'v'VV";
             });
@@ -107,6 +109,11 @@ namespace MasAcademyLab.Web
                 var xmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentsFile);
                 c.IncludeXmlComments(xmlCommentsFullPath);
             });
+
+            services.AddHealthChecksUI().AddInMemoryStorage();
+            services.AddHealthChecks()
+                .AddSqlServer(Configuration.GetConnectionString("MasAcademyLab"))
+                .AddProcessAllocatedMemoryHealthCheck(512); // 512 MB max allocated memory;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -140,7 +147,7 @@ namespace MasAcademyLab.Web
                     });
                 });
             }
-
+            app.UseHttpsRedirection();
             app.UseRouting();
 
             app.UseAuthentication();
@@ -148,7 +155,19 @@ namespace MasAcademyLab.Web
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapDefaultControllerRoute();
+            });
+
+            app.UseHealthChecks("/healthz", new HealthCheckOptions
+            {
+                Predicate = _ => true,
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
+
+            app.UseHealthChecksUI(setup =>
+            {
+                setup.UIPath = "/show-health-ui"; // this is ui path in your browser
+                setup.ApiPath = "/health-ui-api"; // the UI ( spa app )  use this path to get information from the store ( this is NOT the healthz path, is internal ui api )
             });
         }
     }

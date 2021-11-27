@@ -4,6 +4,13 @@
         <name>MasAcademyLab.Web</name>
     </assembly>
     <members>
+        <member name="M:MasAcademyLab.Web.Controllers.LoginController.Login(MasAcademyLab.Service.Models.UserModel)">
+            <summary>
+            Login
+            </summary>
+            <param name="user">Object of the type <see cref="T:MasAcademyLab.Service.Models.UserModel"/></param>
+            <returns>Bearer Token</returns>
+        </member>
         <member name="T:MasAcademyLab.Web.Controllers.TalksController">
             <summary>
             Talks Controller

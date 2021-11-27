@@ -24,6 +24,7 @@ namespace MasAcademyLab.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.ConfigureSettings(Configuration);
             services.AddServiceDependencies(Configuration);
 
             services.AddVersioning();
@@ -37,6 +38,7 @@ namespace MasAcademyLab.Web
             services.AddOpenApi();
 
             services.AddHealthCheck(Configuration);
+            services.AddJwtAuthentication(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -71,6 +73,7 @@ namespace MasAcademyLab.Web
             });
 
             app.UseHealthCheck();
+
         }
     }
 }

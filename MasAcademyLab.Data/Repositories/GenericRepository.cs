@@ -6,9 +6,9 @@ namespace MasAcademyLab.Data.Repositories
     public abstract class GenericRepository
     {
         private readonly MasAcademyLabContext _context;
-        private readonly ILogger<TrainingRepository> _logger;
+        private readonly ILogger _logger;
 
-        public GenericRepository(MasAcademyLabContext context, ILogger<TrainingRepository> logger)
+        public GenericRepository(MasAcademyLabContext context, ILogger logger)
         {
             _context = context;
             _logger = logger;

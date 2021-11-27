@@ -14,6 +14,7 @@ namespace MasAcademyLab.Data
         public DbSet<Training> Trainings { get; set; }
         public DbSet<Speaker> Speakers { get; set; }
         public DbSet<Talk> Talks { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder bldr)
         {
@@ -83,6 +84,21 @@ namespace MasAcademyLab.Data
                   Twitter = ""
               });
 
+            bldr.Entity<User>()
+              .HasData(new
+              {
+                  Id = Guid.Parse("ff6f1dd8-680f-4e09-a555-a67343266b38"),
+                  Name = "victorcop",
+                  Password = "victorcoptest*",
+                  Role = "Developer"
+              },
+              new
+              {
+                  Id = Guid.Parse("5d7ffb6f-1f8b-4a42-91cd-dce929f159c0"),
+                  Name = "victorcop55",
+                  Password = "victorcop123*",
+                  Role = "Manager"
+              });
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using MasAcademyLab.Service;
 using MasAcademyLab.Service.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -15,6 +16,7 @@ namespace MasAcademyLab.Web.Controllers
     [Produces("application/json")]
     [Route("api/Trainings/{code}/[controller]")]
     [ApiController]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public class TalksController : ControllerBase
     {

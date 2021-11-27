@@ -1,5 +1,6 @@
 ﻿using MasAcademyLab.Service;
 using MasAcademyLab.Service.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using System;
@@ -11,6 +12,7 @@ namespace MasAcademyLab.Web.Controllers
     [Route("api/Trainings")]
     [ApiVersion("2.0")]
     [ApiController]
+    [Authorize]
     public class TrainingsV2Controller : ControllerBase
     {
         private readonly ITrainingService _trainingService;

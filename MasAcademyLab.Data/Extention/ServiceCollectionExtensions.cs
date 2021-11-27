@@ -17,6 +17,7 @@ namespace MasAcademyLab.Data.Extention
             services.AddScoped<ITrainingRepository, TrainingRepository>();
             services.AddScoped<ISpeakerRepository, SpeakerRepository>();
             services.AddScoped<ITalkRepository, TalkRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
             return services;
         }
     }

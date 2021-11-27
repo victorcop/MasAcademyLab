@@ -10,9 +10,9 @@ namespace MasAcademyLab.Data.Repositories
     public class TalkRepository : GenericRepository, ITalkRepository
     {
         private readonly MasAcademyLabContext _context;
-        private readonly ILogger<TrainingRepository> _logger;
+        private readonly ILogger<TalkRepository> _logger;
 
-        public TalkRepository(MasAcademyLabContext context, ILogger<TrainingRepository> logger) : base(context, logger)
+        public TalkRepository(MasAcademyLabContext context, ILogger<TalkRepository> logger) : base(context, logger)
         {
             _context = context;
             _logger = logger;
